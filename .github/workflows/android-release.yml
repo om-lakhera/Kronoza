@@ -1,47 +1,49 @@
 
-name: Kronoza Android Release
+name: Kronoza Android Build
 
 on:
   workflow_dispatch:
   push:
-    tags:
-      - 'v*'
+    branches: [main]
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up JDK
+      - name: Set up Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
 
+      - name: Verify Android SDK
+        run: |
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          test -x "$ANDROID_HOME/platform-tools/adb"
+          ls "$ANDROID_HOME/platforms"
+          ls "$ANDROID_HOME/build-tools"
+
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-
       - name: Build APK
-        run: chmod +x gradlew && ./gradlew assembleRelease
+        run: ./gradlew assembleRelease
 
       - name: Build AAB
         run: ./gradlew bundleRelease
 
-      - name: Upload APK and AAB
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Kronoza-v1.0.0
+          name: Kronoza-Release
           path: |
             app/build/outputs/apk/release/*.apk
             app/build/outputs/bundle/release/*.aab
           if-no-files-found: error
-          retention-days: 30
