@@ -26,9 +26,8 @@ jobs:
       - name: Verify Android SDK
         run: |
           echo "ANDROID_HOME=$ANDROID_HOME"
-          test -x "$ANDROID_HOME/platform-tools/adb"
+          test -d "$ANDROID_HOME/platforms"
           ls "$ANDROID_HOME/platforms"
-          ls "$ANDROID_HOME/build-tools"
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
@@ -39,7 +38,7 @@ jobs:
       - name: Build AAB
         run: ./gradlew bundleRelease
 
-      - name: Upload artifacts
+      - name: Upload builds
         uses: actions/upload-artifact@v4
         with:
           name: Kronoza-Release
