@@ -32,12 +32,15 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
+      - name: Make Gradle executable
+       run: chmod +x gradlew
+
       - name: Build APK
-        run: ./gradlew assembleRelease
+       run: bash ./gradlew assembleRelease
 
       - name: Build AAB
-        run: ./gradlew bundleRelease
-
+       run: bash ./gradlew bundleRelease
+       
       - name: Upload builds
         uses: actions/upload-artifact@v4
         with:
