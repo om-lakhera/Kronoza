@@ -1,0 +1,6 @@
+{
+  "name": "Kronoza",
+  "description": "Minimal calendar, daily agenda, task manager, and productivity insights app.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
